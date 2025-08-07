@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверочная работа по математике (ОГЭ формат)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Math&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['\\(', '\\)']],
+            displayMath: [['\\[', '\\]']]
+        },
+        options: {
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            ignoreHtmlClass: 'no-mathjax'
+        },
+        startup: {
+            ready: () => {
+                MathJax.startup.defaultReady();
+                MathJax.startup.promise.then(() => {
+                    console.log('MathJax initialized');
+                });
+            }
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #1976D2;
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .header-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 250px;
+            flex: 1;
+        }
+        
+        .exam-title {
+            font-size: 24px;
+            font-weight: 500;
+        }
+        
+        .timer-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 20px;
+            min-width: 240px;
+        }
+        
+        .timer {
+            font-family: 'Fira Math', monospace;
+            font-weight: 700;
+            font-size: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+        
+        .warning-badge {
+            background: #FF5252;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            background: #FFC107;
+            color: #333;
+        }
+        
+        .btn-secondary {
+            background: #64B5F6;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #FF5252;
+            color: white;
+        }
+        
+        .btn:disabled {
+            background: #BDBDBD;
+            cursor: not-allowed;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .progress-container {
+            padding: 15px 30px;
+            background: #E3F2FD;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #BBDEFB;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #1976D2;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #1976D2;
+            font-weight: 500;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            min-height: 600px;
+        }
+        
+        .questions-container {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .question-block {
+            background: white;
+            border-left: 4px solid #64B5F6;
+            padding: 25px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .question-block.active {
+            border-left: 4px solid #1976D2;
+            background: #E3F2FD;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .question-number {
+            background: #1976D2;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .math-formula {
+            font-family: 'Fira Math', serif;
+            font-size: 20px;
+            margin: 15px 0;
+            padding: 10px 20px;
+            background: #F5F5F5;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        .answer-input {
+            padding: 12px 15px;
+            border: 2px solid #BBDEFB;
+            border-radius: 8px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 300px;
+            font-family: 'Fira Math', serif;
+            transition: all 0.3s ease;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #1976D2;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.5);
+        }
+        
+        .answer-hint {
+            font-size: 14px;
+            color: #757575;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding: 0 30px 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .warning-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .warning-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .modal-icon {
+            font-size: 60px;
+            color: #FF5252;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #1976D2;
+        }
+        
+        .modal-text {
+            margin-bottom: 25px;
+            font-size: 18px;
+        }
+        
+        .pause-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1976D2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .pause-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .pause-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .pause-title {
+            font-size: 40px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .pause-text {
+            font-size: 24px;
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        
+        .teacher-panel {
+            background: #FFF8E1;
+            border-top: 3px solid #FFC107;
+            padding: 25px;
+            margin: 20px 30px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .teacher-panel h3 {
+            color: #1976D2;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .results-table th {
+            background: #1976D2;
+            color: white;
+            text-align: left;
+            padding: 12px 15px;
+        }
+        
+        .results-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #BBDEFB;
+        }
+        
+        .results-table tr:nth-child(even) {
+            background: #E3F2FD;
+        }
+        
+        .correct-answer {
+            color: #388E3C;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 900px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .controls {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .timer-container {
+                margin: 10px 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .timer-container {
+                padding: 8px 15px;
+                font-size: 16px;
+            }
+            
+            .timer {
+                font-size: 18px;
+            }
+            
+            .controls {
+                flex-direction: row;
+                gap: 10px;
+            }
+            
+            .btn {
+                padding: 8px 15px;
+                font-size: 14px;
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .exam-title {
+                font-size: 20px;
+            }
+            
+            .question-text {
+                font-size: 16px;
+            }
+            
+            .math-formula {
+                font-size: 18px;
+            }
+            
+            .pause-title {
+                font-size: 30px;
+            }
+            
+            .pause-text {
+                font-size: 18px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-info {
+                min-width: 100%;
+            }
+            
+            .timer-container {
+                min-width: 100%;
+                justify-content: center;
+            }
+            
+            .question-block {
+                padding: 15px;
+            }
+            
+            .modal-text {
+                font-size: 16px;
+            }
+        }
+        
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        .disable-events {
+            pointer-events: none;
+        }
+        
+        .full-screen-warning {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #FF5252;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transform: translateY(100px);
+            transition: transform 0.3s ease;
+            max-width: 350px;
+        }
+        
+        .full-screen-warning.active {
+            transform: translateY(0);
+        }
+        
+        /* Класс для блокировки контента */
+        .content-blocked {
+            filter: blur(5px);
+            pointer-events: none;
+        }
+        
+        .hidden-answers .correct-answer {
+            color: transparent;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Стили для графиков */
+        .graph-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .graph-item {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .graph-canvas {
+            width: 100%;
+            height: 120px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        /* Стили для соответствия */
+        .matching-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .matching-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .matching-label {
+            min-width: 30px;
+            font-weight: bold;
+        }
+        
+        .matching-select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #BBDEFB;
+            background: white;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        /* Анимация для таймера */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+        
+        /* Стили для защиты от скриншотов */
+        .screenshot-warning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            flex-direction: column;
+        }
+        
+        .screenshot-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #FF5252;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <header>
+            <div class="header-info">
+                <div class="exam-title">Проверочная работа по математике (ОГЭ формат)</div>
+                <div class="warning-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    Контроль списывания активирован
+                </div>
+            </div>
+            <div class="timer-container">
+                <i class="far fa-clock"></i>
+                <div class="timer" id="timer">120:00</div>
+                <span>осталось</span>
+            </div>
+            <div class="controls">
+                <button class="btn btn-primary" id="pauseBtn">
+                    <i class="fas fa-pause"></i> Пауза
+                </button>
+                <button class="btn btn-secondary" id="fullscreenBtn">
+                    <i class="fas fa-expand"></i> Полный экран
+                </button>
+            </div>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-info">
+                <span>Прогресс: <span id="progressText">0%</span></span>
+                <span>Вопрос <span id="currentQuestion">1</span> из 19</span>
+            </div>
+        </div>
+        
+        <div class="content-wrapper" id="contentWrapper">
+            <div class="questions-container" id="questionsContainer">
+                <!-- Вопросы будут сгенерированы скриптом -->
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="btn btn-secondary" id="prevBtn" disabled>
+                <i class="fas fa-arrow-left"></i> Назад
+            </button>
+            <button class="btn btn-primary" id="nextBtn">
+                Далее <i class="fas fa-arrow-right"></i>
+            </button>
+            <button class="btn btn-danger" id="submitBtn" style="display: none;">
+                <i class="fas fa-paper-plane"></i> Завершить работу
+            </button>
+        </div>
+        
+        <div class="teacher-panel" id="teacherPanel">
+            <h3><i class="fas fa-chalkboard-teacher"></i> Результаты тестирования</h3>
+            <p>Ваши ответы:</p>
+            <div id="resultsContainer">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Вопрос</th>
+                            <th>Ваш ответ</th>
+                            <th>Правильный ответ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                        <!-- Результаты будут добавлены скриптом -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="warning-modal" id="warningModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="modal-title">Внимание!</h2>
+            <p class="modal-text">Попытка переключения вкладок или потери фокуса с экрана тестирования зафиксирована.</p>
+            <p class="modal-text">Повторные нарушения могут привести к завершению теста.</p>
+            <button class="btn btn-primary" id="modalConfirmBtn">
+                <i class="fas fa-check"></i> Продолжить тест
+            </button>
+        </div>
+    </div>
+    
+    <div class="pause-screen" id="pauseScreen">
+        <div class="pause-icon">
+            <i class="fas fa-pause-circle"></i>
+        </div>
+        <h2 class="pause-title">Тестирование приостановлено</h2>
+        <p class="pause-text">Задания временно недоступны для предотвращения списывания.</p>
+        <button class="btn btn-primary" id="resumeBtn" style="font-size: 20px; padding: 15px 30px;">
+            <i class="fas fa-play"></i> Продолжить тест
+        </button>
+    </div>
+    
+    <div class="full-screen-warning" id="fullScreenWarning">
+        <i class="fas fa-exclamation-triangle"></i>
+        Для обеспечения контроля списывания рекомендуется работать в полноэкранном режиме
+    </div>
+    
+    <div class="screenshot-warning" id="screenshotWarning" style="display: none;">
+        <div class="screenshot-icon">
+            <i class="fas fa-ban"></i>
+        </div>
+        <p>Попытка создания скриншота зафиксирована!</p>
+        <p>Это нарушение правил тестирования.</p>
+    </div>
+
+    <script>
+        // Массив вопросов с исправленными формулами
+        const questions = [
+            {
+                id: 1,
+                module: "Реальная математика",
+                text: "Диаметр диска колеса — 16 дюймов. Ширина шины — 195 мм. Высота профиля — 60% от ширины. Найдите внешний диаметр шины (1 дюйм = 25.4 мм).",
+                answer: "634.6",
+                hint: "Внешний диаметр = диаметр диска + 2 × высота профиля"
+            },
+            {
+                id: 2,
+                module: "Реальная математика",
+                text: "Пачка бумаги содержит 250 листов. За неделю расходуется 1100 листов. Сколько пачек нужно на 3 недели?",
+                answer: "14",
+                hint: "Сначала рассчитайте общее количество листов на 3 недели"
+            },
+            {
+                id: 3,
+                module: "Реальная математика",
+                text: "Пол комнаты 4 м × 5 м покрывают плитками 20 см × 20 см. Сколько плиток потребуется?",
+                answer: "500",
+                hint: "Переведите все размеры в одинаковые единицы измерения"
+            },
+            {
+                id: 4,
+                module: "Реальная математика",
+                text: "Лестница имеет 12 ступеней. Высота ступени — 15 см, длина — 30 см. Найдите расстояние от начала первой до конца последней ступени (в см).",
+                answer: "390",
+                hint: "Расстояние = (количество ступеней - 1) × длина ступени + высота последней ступени"
+            },
+            {
+                id: 5,
+                module: "Реальная математика",
+                text: "Поездка для 3 человек: Поезд: 1600 руб./чел. Автомобиль: расход 10 л/100 км, расстояние 600 км, бензин — 52 руб./л. Какой вариант дешевле?",
+                answer: "автомобиль",
+                hint: "Сравните общую стоимость каждого варианта"
+            },
+            {
+                id: 6,
+                module: "Числа и вычисления",
+                text: "Вычислите: \\( (8.6 \\times 1.2 - 0.8) \\div 0.5 \\)",
+                answer: "19.04",
+                hint: "Выполните операции по порядку: умножение, вычитание, деление"
+            },
+            {
+                id: 7,
+                module: "Числовые неравенства",
+                text: "На прямой отмечены числа: \\( a = 0.8 \\), \\( b = 1.5 \\), \\( c = 2.9 \\). Какому числу соответствует \\( \\sqrt{8} \\)? (≈2.82)",
+                answer: "c",
+                hint: "Определите, между какими числами находится √8"
+            },
+            {
+                id: 8,
+                module: "Алгебра",
+                text: "Найдите значение: \\( \\frac{3x + 2y}{x} \\) при \\( x = 4 \\), \\( y = 6 \\).",
+                answer: "7.5",
+                hint: "Подставьте значения переменных в выражение"
+            },
+            {
+                id: 9,
+                module: "Алгебра",
+                text: "Решите уравнение: \\( 2(5x - 4) = 3x + 10 \\).",
+                answer: "4",
+                hint: "Раскройте скобки и соберите все члены с x в одной части"
+            },
+            {
+                id: 10,
+                module: "Алгебра",
+                text: "В коробке 20 шаров: 5 синих, 7 красных, остальные жёлтые. Какова вероятность вытащить жёлтый шар?",
+                answer: "0.4",
+                hint: "Вероятность = количество жёлтых шаров / общее количество шаров"
+            },
+            {
+                id: 11,
+                module: "Алгебра",
+                text: "Установите соответствие между графиками и функциями:",
+                answer: "А1,Б2,В3",
+                hint: "Проанализируйте характерные точки и форму графиков",
+                type: "graph"
+            },
+            {
+                id: 12,
+                module: "Алгебра",
+                text: "Площадь трапеции: \\( S = \\frac{a+b}{2} \\cdot h \\). Найдите \\( h \\), если \\( a=4 \\), \\( b=6 \\), \\( S=25 \\).",
+                answer: "5",
+                hint: "Подставьте известные значения в формулу и решите уравнение относительно h"
+            },
+            {
+                id: 13,
+                module: "Алгебра",
+                text: "Решите неравенство: \\( 4x - 7 \\leq 2x + 5 \\).",
+                answer: "x ≤ 6",
+                hint: "Перенесите все члены с x в одну сторону, а числа - в другую"
+            },
+            {
+                id: 14,
+                module: "Алгебра",
+                text: "Арифметическая прогрессия: 3; 7; 11; ... Найдите сумму первых 8 членов.",
+                answer: "136",
+                hint: "Сначала найдите разность прогрессии, затем используйте формулу суммы"
+            },
+            {
+                id: 15,
+                module: "Геометрия",
+                text: "В треугольнике ABC: ∠A = 50°, ∠B = 70°. Найдите ∠C.",
+                answer: "60°",
+                hint: "Сумма углов треугольника равна 180°"
+            },
+            {
+                id: 16,
+                module: "Геометрия",
+                text: "Точки A, B, C на окружности. ∠ABC = 58°. Найдите ∠AOC (O — центр).",
+                answer: "116°",
+                hint: "Центральный угол в два раза больше вписанного, опирающегося на ту же дугу"
+            },
+            {
+                id: 17,
+                module: "Геометрия",
+                text: "Равнобедренный треугольник: боковая сторона = 13 см, основание = 10 см. Найдите площадь.",
+                answer: "60",
+                hint: "Найдите высоту треугольника, проведенную к основанию"
+            },
+            {
+                id: 18,
+                module: "Геометрия",
+                text: "На клетчатой бумаге (1×1 см) изображён прямоугольник 7×4 клетки. Найдите его площадь.",
+                answer: "28",
+                hint: "Площадь прямоугольника = длина × ширина"
+            },
+            {
+                id: 19,
+                module: "Геометрия",
+                text: "Отметьте верные утверждения: 1) Диагонали ромба перпендикулярны. 2) Любые два квадрата подобны. 3) Вписанный угол, опирающийся на диаметр, прямой.",
+                answer: "123",
+                hint: "Выберите все верные утверждения"
+            }
+        ];
+
+        // Элементы DOM
+        const timerElement = document.getElementById('timer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const currentQuestionElement = document.getElementById('currentQuestion');
+        const questionsContainer = document.getElementById('questionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resumeBtn = document.getElementById('resumeBtn');
+        const warningModal = document.getElementById('warningModal');
+        const pauseScreen = document.getElementById('pauseScreen');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        const contentWrapper = document.getElementById('contentWrapper');
+        const teacherPanel = document.getElementById('teacherPanel');
+        const resultsBody = document.getElementById('resultsBody');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const fullScreenWarning = document.getElementById('fullScreenWarning');
+        const mainContainer = document.getElementById('mainContainer');
+        const screenshotWarning = document.getElementById('screenshotWarning');
+
+        // Переменные состояния
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill('');
+        let timerInterval;
+        let totalSeconds = 120 * 60; // 120 минут
+        let isPaused = false;
+        let violationsCount = 0;
+        let testCompleted = false;
+
+        // Инициализация теста
+        function initTest() {
+            // Показать предупреждение о полноэкранном режиме
+            setTimeout(() => {
+                fullScreenWarning.classList.add('active');
+            }, 3000);
+            
+            // Скрыть предупреждение через 10 секунд
+            setTimeout(() => {
+                fullScreenWarning.classList.remove('active');
+            }, 10000);
+            
+            // Инициализация первого вопроса
+            goToQuestion(0);
+        }
+
+        // Отображение всех вопросов
+        function renderQuestions() {
+            questionsContainer.innerHTML = '';
+            questions.forEach((q, index) => {
+                const isActive = index === currentQuestionIndex;
+                let inputHTML = '';
+                
+                if (q.type === "graph") {
+                    // Специальный рендеринг для вопроса с графиками
+                    inputHTML = renderGraphQuestion(index);
+                } else {
+                    inputHTML = `
+                        <input type="text" 
+                               class="answer-input" 
+                               placeholder="Введите ответ..." 
+                               value="${userAnswers[index]}" 
+                               oninput="saveAnswer(${index}, this.value)">
+                    `;
+                }
+                
+                const questionHTML = `
+                    <div class="question-block ${isActive ? 'active' : ''}" data-id="${q.id}" data-index="${index}">
+                        <div class="question-header">
+                            <div class="question-number">${q.id}</div>
+                            <div class="question-module">${q.module}</div>
+                        </div>
+                        <div class="question-text">${q.text}</div>
+                        ${inputHTML}
+                        <div class="answer-hint">${q.hint}</div>
+                    </div>
+                `;
+                questionsContainer.innerHTML += questionHTML;
+            });
+            
+            currentQuestionElement.textContent = currentQuestionIndex + 1;
+            updateProgress();
+            
+            // Перерендерить MathJax для новых элементов
+            if (window.MathJax) {
+                MathJax.typeset();
+            }
+            
+            // Отрисовать графики для текущего вопроса
+            if (questions[currentQuestionIndex].type === "graph") {
+                setTimeout(drawGraphs, 50);
+            }
+            
+            // Добавить обработчики клика на блоки вопросов
+            document.querySelectorAll('.question-block').forEach(block => {
+                block.addEventListener('click', function(e) {
+                    if (testCompleted) return;
+                    const index = parseInt(this.getAttribute('data-index'));
+                    goToQuestion(index);
+                });
+            });
+        }
+
+        // Специальный рендеринг для вопроса с графиками
+        function renderGraphQuestion(questionIndex) {
+            return `
+                <div class="matching-container">
+                    <div class="matching-row">
+                        <span class="matching-label">А</span>
+                        <div class="graph-item">
+                            <div class="graph-canvas" id="graphA"></div>
+                            <p>\\( y = -2x + 3 \\)</p>
+                        </div>
+                        <select class="matching-select" onchange="saveAnswer(${questionIndex}, getGraphAnswers()); event.stopPropagation();">
+                            <option value="">Выберите</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <div class="matching-row">
+                        <span class="matching-label">Б</span>
+                        <div class="graph-item">
+                            <div class="graph-canvas" id="graphB"></div>
+                            <p>\\( y = x^2 \\)</p>
+                        </div>
+                        <select class="matching-select" onchange="saveAnswer(${questionIndex}, getGraphAnswers()); event.stopPropagation();">
+                            <option value="">Выберите</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <div class="matching-row">
+                        <span class="matching-label">В</span>
+                        <div class="graph-item">
+                            <div class="graph-canvas" id="graphC"></div>
+                            <p>\\( y = \\frac{6}{x} \\)</p>
+                        </div>
+                        <select class="matching-select" onchange="saveAnswer(${questionIndex}, getGraphAnswers()); event.stopPropagation();">
+                            <option value="">Выберите</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Отрисовка графиков
+        function drawGraphs() {
+            drawGraph(document.getElementById('graphA'), 'linear');
+            drawGraph(document.getElementById('graphB'), 'quadratic');
+            drawGraph(document.getElementById('graphC'), 'hyperbola');
+            
+            // Восстановление выбранных значений
+            const answer = userAnswers[10];
+            if (answer) {
+                const parts = answer.split(',');
+                if (parts.length === 3) {
+                    const selects = document.querySelectorAll('.matching-select');
+                    selects[0].value = parts[0].replace('А', '');
+                    selects[1].value = parts[1].replace('Б', '');
+                    selects[2].value = parts[2].replace('В', '');
+                }
+            }
+        }
+
+        // Функция отрисовки графика
+        function drawGraph(canvas, type) {
+            if (!canvas) return;
+            
+            // Установка размеров canvas
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Очистка
+            ctx.clearRect(0, 0, width, height);
+            
+            // Координатная сетка
+            ctx.beginPath();
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+            
+            // Вертикальные линии
+            for (let x = 0; x <= width; x += width / 10) {
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+            }
+            
+            // Горизонтальные линии
+            for (let y = 0; y <= height; y += height / 10) {
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+            }
+            ctx.stroke();
+            
+            // Оси
+            ctx.beginPath();
+            ctx.strokeStyle = '#1976D2';
+            ctx.lineWidth = 2;
+            ctx.moveTo(0, height/2);
+            ctx.lineTo(width, height/2);
+            ctx.moveTo(width/2, 0);
+            ctx.lineTo(width/2, height);
+            ctx.stroke();
+            
+            // График
+            ctx.beginPath();
+            ctx.strokeStyle = '#FF5252';
+            ctx.lineWidth = 3;
+            
+            if (type === 'linear') {
+                // Линейная функция: y = -2x + 3
+                for (let x = -5; x <= 5; x += 0.1) {
+                    const px = width/2 + x*(width/10);
+                    const py = height/2 - (-2*x + 3)*(height/10);
+                    if (x === -5) {
+                        ctx.moveTo(px, py);
+                    } else {
+                        ctx.lineTo(px, py);
+                    }
+                }
+            } else if (type === 'quadratic') {
+                // Квадратичная функция: y = x²
+                for (let x = -5; x <= 5; x += 0.1) {
+                    const px = width/2 + x*(width/10);
+                    const py = height/2 - (x*x)*(height/10);
+                    if (x === -5) {
+                        ctx.moveTo(px, py);
+                    } else {
+                        ctx.lineTo(px, py);
+                    }
+                }
+            } else if (type === 'hyperbola') {
+                // Гипербола: y = 6/x
+                let firstPoint = true;
+                for (let x = -5; x <= 5; x += 0.1) {
+                    if (Math.abs(x) < 0.1) continue;
+                    const px = width/2 + x*(width/10);
+                    const py = height/2 - (6/x)*(height/10);
+                    if (firstPoint) {
+                        ctx.moveTo(px, py);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(px, py);
+                    }
+                }
+            }
+            
+            ctx.stroke();
+        }
+
+        // Получение ответов для вопроса с графиками
+        function getGraphAnswers() {
+            const selects = document.querySelectorAll('.matching-select');
+            const a = selects[0].value || '';
+            const b = selects[1].value || '';
+            const c = selects[2].value || '';
+            return `А${a},Б${b},В${c}`;
+        }
+
+        // Сохранение ответа пользователя
+        function saveAnswer(index, value) {
+            userAnswers[index] = value;
+            updateProgress();
+        }
+
+        // Обновление прогресса
+        function updateProgress() {
+            const answeredCount = userAnswers.filter(a => a.trim() !== '').length;
+            const progress = Math.round((answeredCount / questions.length) * 100);
+            
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = `${progress}%`;
+            
+            // Показываем кнопку завершения, если отвечены все вопросы
+            if (answeredCount === questions.length) {
+                submitBtn.style.display = 'block';
+            }
+        }
+
+        // Навигация по вопросам
+        function goToQuestion(index) {
+            if (index >= 0 && index < questions.length && !testCompleted) {
+                currentQuestionIndex = index;
+                renderQuestions();
+                
+                // Прокрутка к вопросу
+                const activeBlock = document.querySelectorAll('.question-block')[index];
+                activeBlock.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+                
+                // Обновляем состояние кнопок
+                prevBtn.disabled = currentQuestionIndex === 0;
+                nextBtn.disabled = currentQuestionIndex === questions.length - 1;
+            }
+        }
+
+        // Запуск таймера
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (!isPaused && !testCompleted) {
+                    totalSeconds--;
+                    
+                    if (totalSeconds <= 0) {
+                        finishTest();
+                        return;
+                    }
+                    
+                    updateTimerDisplay();
+                }
+            }, 1000);
+            updateTimerDisplay(); // Инициализация отображения
+        }
+
+        // Обновление отображения таймера
+        function updateTimerDisplay() {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Меняем цвет при малом времени
+            if (minutes < 2) {
+                timerElement.style.color = '#FF5252';
+                timerElement.classList.add('pulse');
+            } else {
+                timerElement.classList.remove('pulse');
+            }
+        }
+
+        // Завершение теста
+        function finishTest() {
+            clearInterval(timerInterval);
+            testCompleted = true;
+            
+            // Блокируем интерфейс
+            contentWrapper.classList.add('content-blocked');
+            document.querySelectorAll('.answer-input').forEach(input => input.disabled = true);
+            document.querySelectorAll('.matching-select').forEach(select => select.disabled = true);
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            submitBtn.disabled = true;
+            pauseBtn.disabled = true;
+            
+            // Показываем панель учителя
+            teacherPanel.style.display = 'block';
+            showResults();
+        }
+
+        // Показать результаты
+        function showResults() {
+            resultsContainer.style.display = 'block';
+            resultsBody.innerHTML = '';
+            
+            questions.forEach((q, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${q.id}</td>
+                    <td>${q.text}</td>
+                    <td>${userAnswers[index] || '—'}</td>
+                    <td class="correct-answer">${q.answer}</td>
+                `;
+                resultsBody.appendChild(row);
+            });
+            
+            // Обновление MathJax для формул в результатах
+            if (window.MathJax) {
+                MathJax.typeset();
+            }
+        }
+
+        // Обработка попытки скриншота
+        function handleScreenshotAttempt() {
+            violationsCount++;
+            
+            // Показать предупреждение
+            screenshotWarning.style.display = 'flex';
+            contentWrapper.classList.add('content-blocked');
+            
+            // Запись в лог
+            console.warn(`Попытка скриншота зафиксирована (${new Date().toLocaleString()})`);
+            
+            // Скрыть предупреждение через 5 секунд
+            setTimeout(() => {
+                screenshotWarning.style.display = 'none';
+                contentWrapper.classList.remove('content-blocked');
+                
+                // После 3 нарушений завершаем тест
+                if (violationsCount >= 3) {
+                    setTimeout(() => {
+                        finishTest();
+                    }, 1000);
+                }
+            }, 5000);
+        }
+
+        // Настройка системы защиты
+        function setupSecurity() {
+            // Запрет копирования
+            document.addEventListener('copy', (e) => {
+                e.preventDefault();
+                handleScreenshotAttempt();
+            });
+            
+            // Запрет вставки
+            document.addEventListener('paste', (e) => {
+                e.preventDefault();
+                handleScreenshotAttempt();
+            });
+            
+            // Запрет вырезания
+            document.addEventListener('cut', (e) => {
+                e.preventDefault();
+                handleScreenshotAttempt();
+            });
+            
+            // Запрет контекстного меню
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                handleScreenshotAttempt();
+            });
+            
+            // Контроль переключения вкладок
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden && !isPaused) {
+                    handleScreenshotAttempt();
+                }
+            });
+            
+            // Контроль потери фокуса
+            window.addEventListener('blur', () => {
+                if (!isPaused && !testCompleted) {
+                    handleScreenshotAttempt();
+                }
+            });
+            
+            // Обнаружение PrintScreen и комбинаций
+            document.addEventListener('keydown', function(e) {
+                // PrintScreen
+                if (e.key === 'PrintScreen' || e.keyCode === 44) {
+                    e.preventDefault();
+                    handleScreenshotAttempt();
+                }
+                
+                // Комбинации: Alt+PrintScreen, Ctrl+PrintScreen
+                if ((e.altKey || e.ctrlKey) && (e.key === 'PrintScreen' || e.keyCode === 44)) {
+                    e.preventDefault();
+                    handleScreenshotAttempt();
+                }
+                
+                // Комбинация Windows+Shift+S (Win10+)
+                if (e.key === 's' && e.shiftKey && (e.metaKey || e.ctrlKey)) {
+                    e.preventDefault();
+                    handleScreenshotAttempt();
+                }
+            });
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Навигация
+            prevBtn.addEventListener('click', () => goToQuestion(currentQuestionIndex - 1));
+            nextBtn.addEventListener('click', () => goToQuestion(currentQuestionIndex + 1));
+            submitBtn.addEventListener('click', finishTest);
+            
+            // Пауза
+            pauseBtn.addEventListener('click', () => {
+                if (testCompleted) return;
+                isPaused = true;
+                pauseScreen.classList.add('active');
+                contentWrapper.classList.add('content-blocked');
+            });
+            
+            // Продолжение
+            resumeBtn.addEventListener('click', () => {
+                isPaused = false;
+                pauseScreen.classList.remove('active');
+                contentWrapper.classList.remove('content-blocked');
+            });
+            
+            // Обработка модального окна
+            modalConfirmBtn.addEventListener('click', () => {
+                warningModal.classList.remove('active');
+                contentWrapper.classList.remove('disable-events');
+            });
+            
+            // Полноэкранный режим
+            fullscreenBtn.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => {
+                        console.error(`Ошибка при переходе в полноэкранный режим: ${err.message}`);
+                    });
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                }
+            });
+        }
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            initTest();
+            setupSecurity();
+            setupEventListeners();
+            startTimer();
+            renderQuestions();
+        });
+        
+        // Экспорт функций в глобальную область видимости
+        window.saveAnswer = saveAnswer;
+        window.getGraphAnswers = getGraphAnswers;
+        window.goToQuestion = goToQuestion;
+    </script>
+</body>
+</html>
